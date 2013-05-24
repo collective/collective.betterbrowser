@@ -5,6 +5,13 @@ import cgi
 import urllib
 import plone.testing.z2
 
+try:
+    from pyquery import PyQuery
+    PYQUERY_AVAILABLE = True
+except:
+    PYQUERY_AVAILABLE = False
+
+
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
 
@@ -92,6 +99,24 @@ class BetterBrowser(plone.testing.z2.Browser):
 
     def assert_notfound(self, url):
         self.assert_http_exception(url, 'NotFound')
+
+    def query(self, selector):
+        assert PYQUERY_AVAILABLE, """
+            to use, install collective.betterbrowser with pyquery, e.g:
+            collective.betterbrowser[pyquery]
+        """
+
+        # there's probably better performance to be had by caching this
+        return PyQuery(self.contents)(selector)
+
+    def assert_count(self, query, count):
+        assert len(self.query(query)) == count
+
+    def assert_present(self, query):
+        self.assert_count(query, 1)
+
+    def assert_missing(self, query):
+        self.assert_count(query, 0)
 
     def show(self, port=8888, open_in_browser=True, threaded=False):
         """ Serves the currently open site on localhost:<port> handling all

@@ -30,6 +30,9 @@ setup(name='collective.betterbrowser',
           'setuptools',
           'plone.testing'
       ],
+      extras_require={
+          'pyquery': ['pyquery']
+      },
       entry_points="""
       # -*- Entry points: -*-
       """,
