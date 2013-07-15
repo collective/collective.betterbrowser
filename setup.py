@@ -15,7 +15,11 @@ setup(name='collective.betterbrowser',
       # Get more strings from
       # http://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
+          "Framework :: Plone",
+          "Framework :: Plone :: 4.3",
+          "Intended Audience :: Developers",
           "Programming Language :: Python",
+          "Topic :: Software Development :: Libraries :: Python Modules",
       ],
       keywords='mechanize browser testing plone',
       author='Denis Krienbuehl',
