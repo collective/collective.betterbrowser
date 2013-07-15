@@ -244,5 +244,8 @@ class BetterBrowser(plone.testing.z2.Browser):
         self.getControl(name='%s-year' % widget).value = str(date.year)
         self.getControl(name='%s-month' % widget).value = [str(date.month)]
         self.getControl(name='%s-day' % widget).value = str(date.day)
-        self.getControl(name='%s-hour' % widget).value = str(date.hour)
-        self.getControl(name='%s-minute' % widget).value = str(date.minute)
+        try:  # enable datetime AND date inputs
+            self.getControl(name='%s-hour' % widget).value = str(date.hour)
+            self.getControl(name='%s-minute' % widget).value = str(date.minute)
+        except LookupError:
+            pass
