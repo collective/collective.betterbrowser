@@ -240,35 +240,38 @@ class BetterBrowser(plone.testing.z2.Browser):
 
             return close
 
-    def set_date(self, widget, date):
+    def set_date(self, widgetname, date):
 
-        self.set_widget('%s-year' % widget, str(date.year))
-        self.set_widget('%s-month' % widget, [str(date.month)])
-        self.set_widget('%s-day' % widget, str(date.day))
+        def set_date_part(part):
+            widget = self.widget('-'.join((widgetname, part)))
+            value = getattr(date, part)
+
+            if widget.type == 'select':
+                widget.value = [str(value)]
+            else:
+                widget.value = str(value)
+
+        for part in ('year', 'month', 'day'):
+            set_date_part(part)
 
         try:  # enable datetime AND date inputs
-            self.set_widget('%s-hour' % widget, str(date.hour))
-            self.set_widget('%s-minute' % widget, str(date.minute))
+            if hasattr(date, 'hour') and hasattr(date, 'minute'):
+                set_date_part('hour')
+                set_date_part('minute')
         except LookupError:
             pass
 
-    def get_widget(self, widget):
-        """ Allows to get the value of a widget, omitting the form.widgets
+    def widget(self, widgetname):
+        """ Allows to get the widget-control, omitting the form.widgets
         part. e.g.
 
-        get_widget('title')
+        self.widget('title')
 
         is equal to
 
-        browser.getControl('form.widgets.title').value
+        browser.getControl('form.widgets.title')
 
         """
 
-        widget = widget.replace('form.widgets.', '')
-        return self.getControl(name='form.widgets.%s' % widget).value
-
-    def set_widget(self, widget, value):
-        """ Counterpart to get_widget. """
-
-        widget = widget.replace('form.widgets.', '')
-        self.getControl(name='form.widgets.%s' % widget).value = value
+        widgetname = widgetname.replace('form.widgets.', '')
+        return self.getControl(name='form.widgets.%s' % widgetname)

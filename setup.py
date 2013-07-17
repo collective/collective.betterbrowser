@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.3'
+version = '0.4'
 
 docs = ('README.rst', 'CONTRIBUTORS.rst', 'CHANGES.rst')
 long_description = '\n'.join(open(f).read() for f in docs)

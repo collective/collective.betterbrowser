@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.4
+---
+
+- Improves the flexibility of getting/setting a widget
+
 0.3
 ---
 
